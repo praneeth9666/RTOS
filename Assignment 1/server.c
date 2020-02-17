@@ -1,5 +1,3 @@
-//Example code: A simple server side code, which echos back the received message. 
-//Handle multiple socket connections with select and fd_set on Linux 
 #include <stdio.h> 
 #include <string.h> //strlen 
 #include <stdlib.h> 
@@ -29,7 +27,8 @@ int main(int argc , char *argv[])
   fd_set readfds; 
     
   //a message 
-  char *message = "ECHO Daemon v1.0 \r\n"; 
+  char *message = "Hello from server \r\n";
+  char *msg= "SENT \r\n"; 
   
   //initialise all client_socket[] to 0 so not checked 
   for (i = 0; i < max_clients; i++) 
@@ -176,7 +175,12 @@ int main(int argc , char *argv[])
           //of the data read 
           buffer[valread] = '\0';
           for(i=0;i<30;i++){
-            send(client_socket[i] , buffer , strlen(buffer) , 0 ); 
+            if(sd == client_socket[i]){
+              send(sd,msg,strlen(msg),0);
+            }
+            else{
+            send(client_socket[i] , buffer , strlen(buffer) , 0 );
+            } 
           } 
           
         } 
